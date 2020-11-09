@@ -1,0 +1,7 @@
+{
+  "name": "Koala Industries",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
