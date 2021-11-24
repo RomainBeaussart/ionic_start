@@ -1,6 +1,17 @@
-import { createApp } from 'vue'
+import Vue from 'vue'
 import App from './App.vue'
-import router from './router';
+import router from './router'
+import { provide } from "@vue/composition-api";
+import { DefaultApolloClient } from "@vue/apollo-composable";
+import { createHttpLink } from "apollo-link-http";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { ApolloClient } from "apollo-client";
+
+import VueApollo from 'vue-apollo'
+
+import { apolloClient } from './vue-apollo'
+
+import VueCompositionApi from "@vue/composition-api";
 
 import { IonicVue } from '@ionic/vue';
 
@@ -23,10 +34,20 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-const app = createApp(App)
+const apolloProvider = new VueApollo({
+    defaultClient: apolloClient
+})
+
+
+
+const app = Vue.createApp(App)
   .use(IonicVue)
-  .use(router);
+  .use(router)
+  .use(VueApollo, {
+    apolloClient
+  })
   
 router.isReady().then(() => {
-  app.mount('#app');
+    provide(DefaultApolloClient, apolloClient);
+    app.mount('#app');
 });
